@@ -1,0 +1,44 @@
+@charset "utf8";
+.container {
+	width: 400px;
+	margin: 20px auto;
+}
+.gridContainer {
+	width: 100%;
+	position: relative;
+}
+.grid {
+	width: 400px;
+	height: 400px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	border-radius: 20px;
+	border-spacing: 10px;
+	table-layout: fixed;
+}
+.cell {
+	width: 100px;
+	height: 100px;
+	border-radius: 20px;
+	font-size: 64px;
+	font-weight: bold;
+	text-align: center;
+}
+#gbase { background-color: #bbada0; }
+#gbase .cell { background-color: #ccc0b3; }
+.num2 { background-color: #eee3da; }
+.num4 { background-color: #ede0c8; }
+.num8 { background-color: #f2b179; }
+.num16 { background-color: #f59563; }
+.num32 { background-color: #f67c5f; }
+.num64 { background-color: #f65e3b; }
+.num128 { background-color: #edcf72; }
+.num256 { background-color: #edcc61; }
+.num512 { background-color: #9c0; }
+.num1024 { background-color: #33b5e5; }
+.num2048 { background-color: #09c; }
+.num8, .num16, .num32, .num64, .num128, .num256, .num512, .num1024, .num2014 { color: #fff; }
+.num128, .num256, .num512 { font-size: 48px; }
+.num1024, .num2014 { font-size: 36px; }
+h1 {}
