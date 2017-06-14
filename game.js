@@ -72,10 +72,48 @@ var game = {
 			}
 		}
 	},
+
+	moveLeft: function () {
+		for (var i = 0; i < this.rowNum; i++) {
+			for (var j = 0; j < this.colNum; j++) {
+				var nextNotNull = this.getRightNext(i, j);
+				if (nextNotNull != -1) {
+					if (nextNotNull == this.data[i][j]) {
+						this.data[i][j] *= 2;
+						nextNotNull = 0;
+					}
+				}
+			}
+		}
+		console.log('moveLeft success');
+	},
+
+	getRightNext: function (rowIndex, colIndex) {
+		for (var i = colIndex; i < this.colNum-1; i++) {
+			if (this.data[rowIndex][i+1] != 0) {
+				return this.data[rowIndex][i+1];
+			}
+		}
+		return -1;
+	},
 };
 window.onload = function () {
 	game.start();
-	console.log('game.start() success');
+	window.onkeydown = function (e) {
+		switch (e.keyCode) {
+			case 37:
+				game.moveLeft();
+				break; 
+			case 38:
+				break;
+			case 39:
+				break;
+			case 40:
+				break;
+			default: 
+				console.log(e.keyCode);
+		}
+	};
 };
 
 /*
