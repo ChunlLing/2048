@@ -3,13 +3,16 @@ window.onload = function () {
 	window.onkeydown = function (e) {
 		switch (e.keyCode) {
 			case 37:
-				game.moveLeft();
+				game.moveLeft(1);
 				break; 
-			case 38:
-				break;
 			case 39:
+				game.moveLeft(2);
+				break;
+			case 38:
+				game.moveLeft(3);
 				break;
 			case 40:
+				game.moveLeft(4);
 				break;
 		}
 	};
