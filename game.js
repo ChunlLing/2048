@@ -10,7 +10,7 @@ var game = {
 	isFull: function () {
 		for (var i = 0; i < this.rowNum; i++) {
 			for (var j = 0; j < this.colNum; j++) {
-				if (this.data[this.rowNum][colNum] == 0) {
+				if (this.data[i][j] == 0) {
 					return false;
 				}
 			}
@@ -19,20 +19,21 @@ var game = {
 	},
 
 	isGameOver: function () {
-		if (!isFull()) {
+		if (!this.isFull()) {
 			return false;
 		}
 		for (var i = 0; i < this.rowNum-1; i++) {
 			for (var j = 0; j < this.colNum-1; j++) {
-				if (this.data[i][j] == this.data[i][j-1]) {
+				if (this.data[i][j] == this.data[i][j+1]) {
 					return false;
 				}
-				if (this.data[i][j] == this.data[i-1][j]) {
+/*				if (this.data[i][j] == this.data[i+1][j]) {
 					return false;
-				}
+				}*/
 			}
 		}
-		this.state = GAMEOVER;
+		this.state = this.GAMEOVER;
+		console.log(this.state);
 		return true;
 	},
 
@@ -75,6 +76,9 @@ var game = {
 	},
 
 	moveLeft: function () {
+		var oldData, newData;
+		oldData = this.data.toString();
+		console.log('oldData : ' + oldData);
 		for (var i = 0; i < this.rowNum; i++) {
 			for (var j = 0; j < this.colNum; j++) {
 				var nextNotNull = this.getRightNext(i, j);
@@ -82,7 +86,6 @@ var game = {
 					if (this.data[i][j] == 0) {
 						this.data[i][j] = this.data[i][nextNotNull];
 						this.data[i][nextNotNull] = 0;
-						console.log('this.data[' + i + '][' + j + '] == ' + this.data[i][j]);
 					} else if (this.data[i][nextNotNull] == this.data[i][j]) {
 						this.data[i][j] *= 2;
 						this.data[i][nextNotNull] = 0;
@@ -90,9 +93,15 @@ var game = {
 				}
 			}
 		}
-		this.randomNum();
-		this.updateView();
-		console.log('moveLeft success');
+		newData = this.data.toString();
+		//if (newData != oldData) {
+			if (!this.isGameOver()) {
+				this.randomNum();
+				this.updateView();
+			} else {
+				console.log('gameover');
+			}
+		//}
 	},
 
 	getRightNext: function (rowIndex, colIndex) {
