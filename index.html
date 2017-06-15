@@ -7,7 +7,7 @@
 </head>
 <body>
 	<div class="container">
-		<h1>分数：<span id="score">20</span></h1>
+		<h1>分数：<span id="score" class="score">0</span></h1>
 		<div class="gridContainer">
 			<table id="gbase" class="grid">
 				<tr>
@@ -64,7 +64,13 @@
 		</div>
 	</div>
 	<div id="gameStart"></div>
-	<div id="gameOver"></div>
+	<div id="gameOver">
+		<h1>游戏结束</h1>
+		<p>您的分数：<span class="score">20</span></p>
+		<button class="replay"><canvas id="replayIcon" width="50" height="50"></canvas></button>
+	</div>
+	<script type="text/javascript" src="canvas.js"></script>
 	<script type="text/javascript" src="game.js"></script>
+	<script type="text/javascript" src="index.js"></script>
 </body>
 </html>
