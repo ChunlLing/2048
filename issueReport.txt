@@ -1,2 +1,5 @@
 Q: <td>的宽度会随文字长度而发生改变，width失效
 A: 在<table>设置table-layout: fixed
+
+Q: 数字失踪、边界刷新、连续不加
+A:

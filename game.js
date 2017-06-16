@@ -2,17 +2,11 @@ var game = {
 	data: [],
 	rowNum: 4,
 	colNum: 4,
+	direct: 0,
 	score: 0,
 	RUNNING: true,
 	GAMEOVER: false,
 	state: this.RUNNING,
-	direct: 0,
-	/*
-		1 左
-		2 右
-		3 上
-		4 下
-	*/
 
 	isFull: function () {
 		for (var i = 0; i < this.rowNum; i++) {
@@ -39,12 +33,11 @@ var game = {
 				}
 			}
 		}
-		this.state = this.GAMEOVER;
-		icon.replayIcon();
 		return true;
 	},
 
 	start: function () {
+		this.state = this.RUNNING;
 		for (var i = 0; i < this.rowNum; i++) {
 			this.data[i] = [];
 			for (var j = 0; j < this.colNum; j++) {
@@ -52,14 +45,16 @@ var game = {
 			}
 		}
 		this.randomNum();
+		this.randomNum();
+		this.score = 0;
 		this.updateView();
 	},
 
 	randomNum: function () {
 		var rowIndex, colIndex;
 		while(true) {
-			rowIndex = Math.floor(Math.random()*4);
-			colIndex = Math.floor(Math.random()*4);
+			rowIndex = Math.floor(Math.random()*this.rowNum);
+			colIndex = Math.floor(Math.random()*this.colNum);
 			if (this.data[rowIndex][colIndex] == 0) {
 				this.data[rowIndex][colIndex] = (Math.random() > 0.4) ? 2 : 4;
 				break;
@@ -88,10 +83,12 @@ var game = {
 			case 1:
 			case 2:
 				num = this.data[i][next];
+				this.data[i][next] = 0;
 				break;
 			case 3:
 			case 4:
 				num = this.data[next][j];
+				this.data[next][j] = 0;
 				break;
 		}
 		this.score += num == 2 ? 1 :
@@ -105,134 +102,134 @@ var game = {
 					  num == 1024 ? 36 :
 					  num == 2048 ? 45 : 0;
 		this.data[i][j] *= 2;
-		switch (this.direct) {
-			case 1:
-			case 2:
-				this.data[i][next] = 0;
-				break;
-			case 3:
-			case 4:
-				this.data[next][j] = 0;
-				break;
-		}
-		
 		for (var value of document.querySelectorAll('.score')) {
 			value.innerHTML = this.score;
 		};
 	},
 
-	moveLeft: function (direct) {
-		this.direct = direct;
-		var oldData, newData;
-		oldData = this.data.toString();
+	getNextNum: function (rowIndex, colIndex) {
 		switch (this.direct) {
 			case 1:
-				// 左
-				for (var i = 0; i < this.rowNum; i++) {
-					for (var j = 0; j < this.colNum; j++) {
-						var nextNotNull = this.getRightNext(i, j);
-						if (nextNotNull != -1) {
-							if (this.data[i][j] == 0) {
-								this.data[i][j] = this.data[i][nextNotNull];
-								this.data[i][nextNotNull] = 0;
-							} else if (this.data[i][nextNotNull] == this.data[i][j]) {
-								this.changeScore(i,j,nextNotNull);
-							}
-						}
+				for (var i = colIndex+1; i < this.colNum; i++) {
+					if (this.data[rowIndex][i] != 0) {
+						return i;
 					}
 				}
 				break;
 			case 2:
-				// 右
-				for (var i = 0; i < this.rowNum; i++) {
-					for (var j = this.colNum-1; j >= 0; j--) {
-						var nextNotNull = this.getRightNext(i, j);
-						if (nextNotNull != -1) {
-							if (this.data[i][j] == 0) {
-								this.data[i][j] = this.data[i][nextNotNull];
-							} else if (this.data[i][nextNotNull] == this.data[i][j]) {
-								this.changeScore(i,j,nextNotNull);
-							}
-							this.data[i][nextNotNull] = 0;
-						}
+				for (var i = colIndex-1; i >= 0; i--) {
+					if (this.data[rowIndex][i] != 0) {
+						return i;
 					}
 				}
 				break;
 			case 3:
-				for (var i = 0; i < this.colNum; i++) {
-					for (var j = 0; j < this.rowNum; j++) {
-						var nextNotNull = this.getRightNext(j, i);
-						if (nextNotNull != -1) {
-							if (this.data[j][i] == 0) {
-								this.data[j][i] = this.data[nextNotNull][i];
-								this.data[nextNotNull][i] = 0;
-							} else if (this.data[nextNotNull][i] == this.data[j][i]) {
-								this.changeScore(j,i,nextNotNull);
-							}
-						}
+				for (var i = rowIndex+1; i < this.rowNum; i++) {
+					if (this.data[i][colIndex] != 0) {
+						return i;
 					}
 				}
 				break;
 			case 4:
-				for (var i = 0; i < this.colNum; i++) {
-					for (var j = this.rowNum-1; j >= 0; j--) {
-						var nextNotNull = this.getRightNext(j, i);
-						if (nextNotNull != -1) {
-							if (this.data[j][i] == 0) {
-								this.data[j][i] = this.data[nextNotNull][i];
-							} else if (this.data[nextNotNull][i] == this.data[j][i]) {
-								this.changeScore(j,i,nextNotNull);
-							}
-							this.data[nextNotNull][i] = 0;
-						}
-					}
-				}
-				break;
-		}
-
-		newData = this.data.toString();
-		// if (newData != oldData) {
-			if (!this.isGameOver()) {
-				this.randomNum();
-				this.updateView();
-			} else {
-				document.querySelector('#gameOver').style.display = 'block';
-			}
-		// }
-	},
-
-	getRightNext: function (rowIndex, colIndex) {
-		switch (this.direct) {
-			case 1:
-				for (var i = colIndex; i < this.colNum-1; i++) {
-					if (this.data[rowIndex][i+1] != 0) {
-						return i+1;
-					}
-				}
-				break;
-			case 2:
-				for (var i = colIndex; i > 0; i--) {
-					if (this.data[rowIndex][i-1] != 0) {
-						return i-1;
-					}
-				}
-				break;
-			case 3:
-				for (var i = rowIndex; i < this.rowNum-1; i++) {
-					if (this.data[i+1][colIndex] != 0) {
-						return i+1;
-					}
-				}
-				break;
-			case 4:
-				for (var i = rowIndex; i > 0; i--) {
-					if (this.data[i-1][colIndex] != 0) {
-						return i-1;
+				for (var i = rowIndex-1; i >= 0; i--) {
+					if (this.data[i][colIndex] != 0) {
+						return i;
 					}
 				}
 				break;
 		}
 		return -1;
+	},
+
+	move: function (direct) {
+		this.direct = direct;
+		var oldData, newData;
+		oldData = this.data.toString();
+		switch (this.direct) {
+			case 1:
+				for (var i = 0; i < this.rowNum; i++) {
+					for (var j = 0; j < this.colNum-1; j++) {
+						var nextNotNull = this.getNextNum(i, j);
+						if (nextNotNull == -1) {
+							break;
+						} else {
+							if (this.data[i][j] == 0) {
+								this.data[i][j] = this.data[i][nextNotNull];
+								this.data[i][nextNotNull] = 0;
+								j--;
+							} else if (this.data[i][nextNotNull] == this.data[i][j]) {
+								this.changeScore(i,j,nextNotNull);
+							}
+						}
+					}
+				}
+				break;
+			case 2:
+				for (var i = 0; i < this.rowNum; i++) {
+					for (var j = this.colNum-1; j > 0; j--) {
+						var nextNotNull = this.getNextNum(i, j);
+						if (nextNotNull == -1) {
+							break;
+						} else {
+							if (this.data[i][j] == 0) {
+								this.data[i][j] = this.data[i][nextNotNull];
+								this.data[i][nextNotNull] = 0;
+								j++;
+							} else if (this.data[i][nextNotNull] == this.data[i][j]) {
+								this.changeScore(i,j,nextNotNull);
+							}
+						}
+					}
+				}
+				break;
+			case 3:
+				for (var i = 0; i < this.colNum; i++) {
+					for (var j = 0; j < this.rowNum-1; j++) {
+						var nextNotNull = this.getNextNum(j, i);
+						if (nextNotNull == -1) {
+							break;
+						} else {
+							if (this.data[j][i] == 0) {
+								this.data[j][i] = this.data[nextNotNull][i];
+								this.data[nextNotNull][i] = 0;
+								j--;
+							} else if (this.data[nextNotNull][i] == this.data[j][i]) {
+								this.changeScore(j,i,nextNotNull);
+							}
+						}
+					}
+				}
+				break;
+			case 4:
+				for (var i = 0; i < this.colNum; i++) {
+					for (var j = this.rowNum-1; j > 0; j--) {
+						var nextNotNull = this.getNextNum(j, i);
+						if (nextNotNull == -1) {
+							break;
+						} else {
+							if (this.data[j][i] == 0) {
+								this.data[j][i] = this.data[nextNotNull][i];
+								this.data[nextNotNull][i] = 0;
+								j++;
+							} else if (this.data[nextNotNull][i] == this.data[j][i]) {
+								this.changeScore(j,i,nextNotNull);
+							}
+						}
+					}
+				}
+				break;
+		}
+		newData = this.data.toString();
+		if (newData != oldData) {
+			if (!this.isGameOver()) {
+				this.randomNum();
+				this.updateView();
+			} else {
+				this.state = this.GAMEOVER;
+				icon.replayIcon();
+				document.querySelector('#gameOver').style.display = 'block';
+			}
+		}
 	}
 };
 
