@@ -16,4 +16,16 @@ var icon = {
 		ctx.lineTo(25,20);
 		ctx.stroke();
 	},
+	playIcon: function (selector, color, lineWidth) {
+		var playIcon = document.querySelector(selector);
+		var ctx = playIcon.getContext('2d');
+		ctx.strokeStyle = color;
+		ctx.lineWidth = lineWidth ? lineWidth : 1;
+		ctx.beginPath();
+		ctx.moveTo(38,25);
+		ctx.lineTo(18,12);
+		ctx.lineTo(18,38);
+		ctx.lineTo(38,25);
+		ctx.stroke();
+	},
 };

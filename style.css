@@ -41,7 +41,7 @@
 .num8, .num16, .num32, .num64, .num128, .num256, .num512, .num1024, .num2014 { color: #fff; }
 .num128, .num256, .num512 { font-size: 48px; }
 .num1024, .num2014 { font-size: 36px; }
-#gameOver {
+#gameStart, #gameOver {
 	display: none;
 	width: 500px;
 	height: 240px;
@@ -53,7 +53,7 @@
 	border-radius: 20px;
 	color: #fff;
 }
-#gameOver h1 {
+#gameStart h1, #gameOver h1 {
 	height: 72px;
 	line-height: 72px;
 	text-align: center;
@@ -63,7 +63,7 @@
 #gameOver p {
 	text-align: center;
 }
-#gameOver .replay {
+#gameStart .play, #gameOver .replay {
 	display: block;
 	width: 50px;
 	height: 50px;
@@ -87,5 +87,9 @@
 	border: none;
 	border-radius: 50%;
 	cursor: pointer;
-	background-color: #bbada0;
+	background-color: transparent;
+}
+.play:hover {
+	transform: scale(1.1);
+	transition: transform .5s;
 }

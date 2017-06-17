@@ -1,7 +1,8 @@
 window.onload = function () {
-	game.start();
+	icon.playIcon('#gameStart .playIcon', '#09c');
 	icon.replayIcon('#game .replayIcon', '#000', 2);
 	icon.replayIcon('#gameOver .replayIcon', '#09c');
+	document.querySelector('#gameStart').style.display = 'block';
 	for (var value of document.querySelectorAll('.score')) {
 		value.innerHTML = game.score;
 	};
@@ -21,8 +22,15 @@ window.onload = function () {
 				break;
 		}
 	};
-	document.querySelector('#gameOver').onclick = function () {
+	document.querySelector('#gameStart .playIcon').onclick = function () {
+		game.start();
+		document.querySelector('#gameStart').style.display = 'none';
+	};
+	document.querySelector('#gameOver .replayIcon').onclick = function () {
 		game.start();
 		document.querySelector('#gameOver').style.display = 'none';
+	};
+	document.querySelector('#game .replayIcon').onclick = function () {
+		game.start();
 	};
 };

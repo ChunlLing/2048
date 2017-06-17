@@ -76,12 +76,15 @@ var game = {
 				}
 			}
 		}
+		for (var value of document.querySelectorAll('.score')) {
+			value.innerHTML = this.score;
+		};
 		if (this.isGameOver()) {
 			document.querySelector('#gameOver').style.display = 'block';
 		}
 	},
 
-	changeScore: function (i, j, next) {
+	changeData: function (i, j, next) {
 		var num;
 		switch (this.direct) {
 			case 1:
@@ -106,9 +109,6 @@ var game = {
 					  num == 1024 ? 36 :
 					  num == 2048 ? 45 : 0;
 		this.data[i][j] *= 2;
-		for (var value of document.querySelectorAll('.score')) {
-			value.innerHTML = this.score;
-		};
 	},
 
 	getNextNum: function (rowIndex, colIndex) {
@@ -162,7 +162,7 @@ var game = {
 								this.data[i][nextNotNull] = 0;
 								j--;
 							} else if (this.data[i][nextNotNull] == this.data[i][j]) {
-								this.changeScore(i,j,nextNotNull);
+								this.changeData(i,j,nextNotNull);
 							}
 						}
 					}
@@ -180,7 +180,7 @@ var game = {
 								this.data[i][nextNotNull] = 0;
 								j++;
 							} else if (this.data[i][nextNotNull] == this.data[i][j]) {
-								this.changeScore(i,j,nextNotNull);
+								this.changeData(i,j,nextNotNull);
 							}
 						}
 					}
@@ -198,7 +198,7 @@ var game = {
 								this.data[nextNotNull][i] = 0;
 								j--;
 							} else if (this.data[nextNotNull][i] == this.data[j][i]) {
-								this.changeScore(j,i,nextNotNull);
+								this.changeData(j,i,nextNotNull);
 							}
 						}
 					}
@@ -216,7 +216,7 @@ var game = {
 								this.data[nextNotNull][i] = 0;
 								j++;
 							} else if (this.data[nextNotNull][i] == this.data[j][i]) {
-								this.changeScore(j,i,nextNotNull);
+								this.changeData(j,i,nextNotNull);
 							}
 						}
 					}
