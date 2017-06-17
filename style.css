@@ -74,8 +74,18 @@
 	cursor: pointer;
 	background-color: rgba(255,255,255,.7);
 }
-#gameOver .replay:hover {
-	background-color: rgba(255,255,255,.9);
+.replay:hover {
 	transform: rotate(360deg);
 	transition: transform .5s;
+}
+#game .replay {
+	float: right;
+	display: block;
+	width: 50px;
+	height: 50px;
+	padding: 0px;
+	border: none;
+	border-radius: 50%;
+	cursor: pointer;
+	background-color: #bbada0;
 }

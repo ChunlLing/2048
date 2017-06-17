@@ -1,5 +1,10 @@
 window.onload = function () {
 	game.start();
+	icon.replayIcon('#game .replayIcon', '#000', 2);
+	icon.replayIcon('#gameOver .replayIcon', '#09c');
+	for (var value of document.querySelectorAll('.score')) {
+		value.innerHTML = game.score;
+	};
 	window.onkeydown = function (e) {
 		switch (e.keyCode) {
 			case 37:
@@ -15,5 +20,9 @@ window.onload = function () {
 				game.move(4);
 				break;
 		}
+	};
+	document.querySelector('#gameOver').onclick = function () {
+		game.start();
+		document.querySelector('#gameOver').style.display = 'none';
 	};
 };

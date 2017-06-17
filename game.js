@@ -33,10 +33,12 @@ var game = {
 				}
 			}
 		}
+		this.state = this.GAMEOVER;
 		return true;
 	},
 
 	start: function () {
+		this.score = 0;
 		this.state = this.RUNNING;
 		for (var i = 0; i < this.rowNum; i++) {
 			this.data[i] = [];
@@ -46,7 +48,6 @@ var game = {
 		}
 		this.randomNum();
 		this.randomNum();
-		this.score = 0;
 		this.updateView();
 	},
 
@@ -67,13 +68,16 @@ var game = {
 		for (var i = 0; i < this.rowNum; i++) {
 			for (var j = 0; j < this.colNum; j++) {
 				if (this.data[i][j] == 0) {
-					cells[i*4+j].innerHTML = '';
-					cells[i*4+j].className = 'cell';
+					cells[i*this.rowNum+j].innerHTML = '';
+					cells[i*this.rowNum+j].className = 'cell';
 				} else {
-					cells[i*4+j].innerHTML = this.data[i][j];
-					cells[i*4+j].className = 'cell num' + this.data[i][j];
+					cells[i*this.rowNum+j].innerHTML = this.data[i][j];
+					cells[i*this.rowNum+j].className = 'cell num' + this.data[i][j];
 				}
 			}
+		}
+		if (this.isGameOver()) {
+			document.querySelector('#gameOver').style.display = 'block';
 		}
 	},
 
@@ -221,14 +225,8 @@ var game = {
 		}
 		newData = this.data.toString();
 		if (newData != oldData) {
-			if (!this.isGameOver()) {
-				this.randomNum();
-				this.updateView();
-			} else {
-				this.state = this.GAMEOVER;
-				icon.replayIcon();
-				document.querySelector('#gameOver').style.display = 'block';
-			}
+			this.randomNum();
+			this.updateView();
 		}
 	}
 };
