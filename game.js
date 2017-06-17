@@ -20,6 +20,14 @@ var game = {
 	},
 
 	isGameOver: function () {
+		for (var i = 0; i < this.rowNum; i++) {
+			for (var j = 0; j < this.colNum; j++) {
+				if (this.data[i][j] == 2048) {
+					this.state = this.GAMEOVER;
+					return true;
+				}
+			}
+		}
 		if (!this.isFull()) {
 			return false;
 		}
